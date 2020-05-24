@@ -3,10 +3,13 @@
 var fs = require("fs");
 var express = require("express");
 var path = require("path");
+const { v4: uuidv4 } = require('uuid');
+
 // server info
 var app = express();
 var PORT = 3000;
-// 
+
+// server middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
@@ -31,9 +34,16 @@ app.get('/api/notes', function(req, res){
     });
 });
 
-app.post("/api/notes", function(req, res){
-
-});
+app.post("/api/notes", function(req, res) {
+    const newNote = req.body;
+    const newId =
+    console.log(newNote);
+    fs.readFile(__dirname + "/db/db.json", "utf8", function(err, data) {
+        if (err) throw err;
+        console.log(JSON.parse(data));
+        // const notes = JSON.parse(data);
+    });
+  });
 
 app.delete("/api/notes/:id", function(req, res){
     const id = req.params.id;
