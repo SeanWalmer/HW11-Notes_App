@@ -9,25 +9,27 @@ var PORT = 3000;
 // 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static(__dirname + '/public'));
 
 // GET calls to render HTML to page
 app.get("/notes", function(req, res) {
-res.sendFile(path.join(__dirname, "../../../public/notes.html"));
+res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 // If no matching route is found default to home
-app.get("*", function(req, res) {
-res.sendFile(path.join(__dirname, "../../../public/index.html"));
+app.get("/", function(req, res) {
+res.sendFile(path.join(__dirname, "/public/index.html"));
 });
 
 
 // api calls
 app.get('/api/notes', function(req, res){
-    fs.readFile(__dirname + "../../../db/db.json", function(err, data) {
+    console.log('hello');
+    fs.readFile(__dirname + "/db/db.json", "utf8", function(err, data) {
         if (err) throw err;
-        return data
-      });
-    }    
-);
+        console.log(JSON.parse(data));
+        res.json(JSON.parse(data));
+    });
+});
 
 app.post("/api/notes", function(req, res){
 
